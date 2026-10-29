@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Review Leave Requests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 32px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        form { display: inline-block; margin: 3px; }
+        button { padding: 8px 12px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Review Leave Requests</h1>
+    <table>
+        <thead><tr><th>ID</th><th>Employee</th><th>Reason</th><th>Days</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+        {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.id }}</td><td>{{ leave.name }}</td><td>{{ leave.reason }}</td>
+            <td>{{ leave.days }}</td><td>{{ leave.status }}</td>
+            <td>
+            {% if leave.status == "Pending" %}
+                <form action="{{ url_for('approve_leave', leave_id=leave.id) }}" method="POST">
+                    <button type="submit">Approve Leave</button>
+                </form>
+                <form action="{{ url_for('reject_leave', leave_id=leave.id) }}" method="POST">
+                    <button type="submit">Reject Leave</button>
+                </form>
+            {% else %}No action available{% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No leave requests available.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+</body>
+</html>

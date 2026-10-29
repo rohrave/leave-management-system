@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leave-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: leave-v1
+  template:
+    metadata:
+      labels:
+        app: leave-v1
+    spec:
+      containers:
+        - name: leave-system
+          image: YOUR_DOCKERHUB_USERNAME/leave-system:v1
+          ports:
+            - containerPort: 5000

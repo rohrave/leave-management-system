@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Leave Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 32px; background: #f4f6f9; }
+        main { max-width: 900px; margin: auto; background: white; padding: 24px; border-radius: 10px; }
+        input, textarea, button { display: block; width: 100%; padding: 10px; margin: 9px 0 16px; box-sizing: border-box; }
+        button { background: #1769aa; color: white; border: 0; cursor: pointer; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #eef2f7; }
+        .links { display: flex; gap: 18px; margin: 18px 0; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Leave Management System</h1>
+    <h3>Version: {{ version }}</h3>
+    <h2>Apply for Leave</h2>
+    <form action="{{ url_for('apply_leave') }}" method="POST">
+        <label for="name">Employee name</label>
+        <input id="name" name="name" required maxlength="100">
+        <label for="reason">Reason for leave</label>
+        <textarea id="reason" name="reason" required maxlength="500"></textarea>
+        <label for="days">Number of days</label>
+        <input id="days" name="days" type="number" min="1" max="365" required>
+        <button type="submit">Apply for Leave</button>
+    </form>
+    <div class="links"><a href="{{ url_for('approve_page') }}">Review requests</a></div>
+    <h2>Leave Applications</h2>
+    <table>
+        <thead><tr><th>ID</th><th>Employee</th><th>Reason</th><th>Days</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for leave in leaves %}
+        <tr><td>{{ leave.id }}</td><td>{{ leave.name }}</td><td>{{ leave.reason }}</td><td>{{ leave.days }}</td><td>{{ leave.status }}</td></tr>
+        {% else %}
+        <tr><td colspan="5">No leave applications yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
